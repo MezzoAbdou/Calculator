@@ -129,6 +129,8 @@ function App() {
   // dispatch({type: ACTIONS.ADD_DIGIT, payload: {digit: 1}})
 
   return (
+    <div>
+      <h1>Lindsay's Calculator</h1>
     <div className="calculator-grid">
       <div className="output">
         <div className="previous-operand">{formatOperand(previousOperand)} {operation}</div>
@@ -152,6 +154,7 @@ function App() {
       <DigitButton digit="." dispatch={dispatch} />
       <DigitButton digit="0" dispatch={dispatch} />
       <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE})} >=</button>
+</div>
 </div>
   );
 }

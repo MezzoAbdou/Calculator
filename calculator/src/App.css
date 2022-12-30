@@ -3,7 +3,11 @@
 }
 body {
   margin: 0;
-  background: linear-gradient(to right, #00AAFF, #00FF6C);
+  background: linear-gradient(to right, pink, lightblue);
+}
+h1 {
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
 }
 .calculator-grid{
   display: grid;
@@ -11,6 +15,20 @@ body {
   justify-content: center;
   grid-template-columns: repeat(4, 6rem);
   grid-template-rows: minmax(7rem, auto) repeat(5, 6rem);
+  animation-name: boxSlideIn;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+}
+@keyframes boxSlideIn {
+ from {
+   margin-right: 100%;
+   width: 300%;
+ }
+ to {
+  margin-left: 0%;
+  width: 100%;
+ }
 }
 
 .calculator-grid > button {
