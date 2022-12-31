@@ -9,6 +9,10 @@ h1 {
   text-align: center;
   font-family: 'Courier New', Courier, monospace;
 }
+
+h1:hover{
+  cursor: pointer;
+}
 .calculator-grid{
   display: grid;
   margin-top: 2rem;

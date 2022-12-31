@@ -3,6 +3,7 @@ import './App.css';
 import { useReducer } from 'react';
 import DigitButton from "./DigitButton"
 import OperationButton from "./OperationButton"
+import ping from "./assets/ping.mp3"
 
 export const ACTIONS = {
   ADD_DIGIT: 'add-digit',
@@ -77,6 +78,7 @@ function reducer(state, {type, payload}){
         }
       }
       case ACTIONS.EVALUATE:  
+      
         if(
           state.operation == null || 
           state.currentOperand == null ||
@@ -123,6 +125,11 @@ function formatOperand(operand) {
   return `${INTEGER_FORMATTER.format(integer)}.${decimal}`
 }
 function App() {
+  function playSound() {
+    new Audio(ping).play()
+  }
+
+
   //reducer
   const [{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer, {})
 
@@ -130,7 +137,7 @@ function App() {
 
   return (
     <div>
-      <h1>Lindsay's Calculator</h1>
+     <h1 onClick={playSound}>Lindsay's Calculator (click here)</h1>
     <div className="calculator-grid">
       <div className="output">
         <div className="previous-operand">{formatOperand(previousOperand)} {operation}</div>
@@ -153,7 +160,7 @@ function App() {
       <OperationButton operation="-" dispatch={dispatch} />
       <DigitButton digit="." dispatch={dispatch} />
       <DigitButton digit="0" dispatch={dispatch} />
-      <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE})} >=</button>
+      <button className="span-two"  onClick={() => dispatch({ type: ACTIONS.EVALUATE})} >=</button>
 </div>
 </div>
   );
