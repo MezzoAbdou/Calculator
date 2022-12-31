@@ -78,7 +78,7 @@ function reducer(state, {type, payload}){
         }
       }
       case ACTIONS.EVALUATE:  
-      
+    
         if(
           state.operation == null || 
           state.currentOperand == null ||
@@ -91,8 +91,9 @@ function reducer(state, {type, payload}){
             previousOperand: null,
             operation: null,
             currentOperand: evaluate(state),
-
+            
           }
+          
   }
 }
 
@@ -114,6 +115,9 @@ function evaluate({ currentOperand, previousOperand, operation}){
     case "/":
       computation = prev / current    
   }
+  
+    new Audio(ping).play()
+  
   return computation.toString()
 }
 const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", {maximumFractionDigits: 0,})
