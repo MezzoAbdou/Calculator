@@ -4,6 +4,7 @@ import { useReducer } from 'react';
 import DigitButton from "./DigitButton"
 import OperationButton from "./OperationButton"
 import ping from "./assets/ping.mp3"
+import click from "./assets/click.mp3"
 
 export const ACTIONS = {
   ADD_DIGIT: 'add-digit',
@@ -12,8 +13,9 @@ export const ACTIONS = {
   DELETE_DIGIT: 'delete-digit',
   EVALUATE: 'evaluate'
 }
-
-function reducer(state, {type, payload}){
+// switch statement
+function reducer(state, {type, payload}){ //type is the action we want to take, payload is the data(information), 
+  //state is current state before we started. reducers always return what will become the new state
   switch(type){
     case ACTIONS.ADD_DIGIT:
       if (state.overwrite){
@@ -31,69 +33,71 @@ function reducer(state, {type, payload}){
         ...state,
         currentOperand: `${state.currentOperand || ""}${payload.digit}`
       }
-      case ACTIONS.CHOOSE_OPERATION:
-        if(state.currentOperand == null && state.previousOperand == null){
-          return state //makes sure that if you click an operand it doesnt click
-        }
+    case ACTIONS.CHOOSE_OPERATION:
+      if(state.currentOperand == null && state.previousOperand == null){
+        return state //makes sure that if you click an operand it doesnt click
+      }
 
-        if(state.currentOperand == null) { //if you click one operand and decide to do another
-          return {
-            ...state,
-            operation: payload.operation
-          }
-        }
-
-        if(state.previousOperand == null){
-          return {
-            ...state,
-            operation: payload.operation,
-            previousOperand: state.currentOperand,
-            currentOperand: null,
-          }
-        }
+      if(state.currentOperand == null) { //if you click one operand and decide to do another
         return {
           ...state,
-          previousOperand: evaluate(state),
+          operation: payload.operation
+        }
+      }
+
+      if(state.previousOperand == null){
+        return {
+          ...state,
           operation: payload.operation,
-          currentOperand: null
-        }
-      case ACTIONS.CLEAR: 
-        return {}
-      case ACTIONS.DELETE_DIGIT:   
-      if(state.overwrite){
-        return {
-          ...state,
-          overwrite: false,
+          previousOperand: state.currentOperand,
           currentOperand: null,
         }
       }
-      if (state.currentOperand == null) return state
-      if (state.currentOperand.length === 1) {
-        return {
-          ...state, currentOperand: null
+      return {
+        ...state,
+        previousOperand: evaluate(state),
+        operation: payload.operation,
+        currentOperand: null
+      }
+    case ACTIONS.CLEAR: 
+      return {}
+    case ACTIONS.DELETE_DIGIT:   
+    if(state.overwrite){
+      return {
+        ...state,
+        overwrite: false,
+        currentOperand: null,
+      }
+    }
+    if (state.currentOperand == null) return state
+    if (state.currentOperand.length === 1) {
+      return {
+        ...state, currentOperand: null
+      }
+      return {
+        ...state,
+        currentOperand: state.currentOperand.slice(0, -1)
+      }
+    }
+    case ACTIONS.EVALUATE:  
+  
+      if(
+        state.operation == null || 
+        state.currentOperand == null ||
+        state.previousOperand == null){
+          return state
         }
         return {
           ...state,
-          currentOperand: state.currentOperand.slice(0, -1)
-        }
-      }
-      case ACTIONS.EVALUATE:  
-    
-        if(
-          state.operation == null || 
-          state.currentOperand == null ||
-          state.previousOperand == null){
-            return state
-          }
-          return {
-            ...state,
-            overwrite: true,
-            previousOperand: null,
-            operation: null,
-            currentOperand: evaluate(state),
-            
-          }
+          overwrite: true,
+          previousOperand: null,
+          operation: null,
+          currentOperand: evaluate(state),
           
+        }
+          
+        default:
+          break;
   }
 }
 
@@ -132,16 +136,19 @@ function App() {
   function playSound() {
     new Audio(ping).play()
   }
+  function playClick(){
+    new Audio(click).play()
+  }
 
 
-  //reducer
+  //reducer starts off as a variable array with an object and dispatch that equals the useReducer method
   const [{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer, {})
 
   // dispatch({type: ACTIONS.ADD_DIGIT, payload: {digit: 1}})
 
   return (
     <div>
-     <h1 onClick={playSound}>Lindsay's Calculator (click here)</h1>
+     <h1 onClick={playSound}>Lindsay's Calculator (sound on!)</h1>
     <div className="calculator-grid">
       <div className="output">
         <div className="previous-operand">{formatOperand(previousOperand)} {operation}</div>

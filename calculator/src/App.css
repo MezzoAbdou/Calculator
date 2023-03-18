@@ -1,5 +1,12 @@
 *::before, *::after {
-  box-sizing: border-box; /* select everything to border box */
+  box-sizing: border-box; /* select everything to border box, 
+  double colon may not be supported on all browsers, difference between pseudo elements and classes.
+  The CSS ::before selector inserts content before a selected element. 
+  CSS :after inserts content after a specified element. 
+  These selectors are commonly used to add text before or after a paragraph or a link.
+
+  This did not appear to change anthing when I took it away
+  */
 }
 body {
   margin: 0;
@@ -19,10 +26,12 @@ h1:hover{
   justify-content: center;
   grid-template-columns: repeat(4, 6rem);
   grid-template-rows: minmax(7rem, auto) repeat(5, 6rem);
+  /*  the auto makes it so the top row expands for a large number */
   animation-name: boxSlideIn;
   animation-duration: 3s;
   animation-iteration-count: 1;
   animation-direction: alternate;
+ 
 }
 @keyframes boxSlideIn {
  from {
@@ -41,6 +50,7 @@ h1:hover{
   border: 1px solid white;
   outline: none;
   background-color: rgba(255, 255, 255, .75);
+  border: solid 1px black;
 }
 .calculator-grid > button:hover,
 .calculator-grid > button:focus {
@@ -48,6 +58,7 @@ h1:hover{
 }
 .span-two{
   grid-column: span 2;
+  
 }
 
 .output{
